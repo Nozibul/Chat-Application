@@ -20,7 +20,7 @@ export default function Login() {
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-         setError('')
+        setError('');
 
         login({email, password})   
     }
