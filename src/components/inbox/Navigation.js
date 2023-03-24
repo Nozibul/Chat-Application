@@ -1,7 +1,14 @@
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import logoImage from "../../assets/images/logo-dark.svg";
+// import logoImage from "../../assets/images/logo.svg";
+import { userLoggedOut } from "../../features/auth/authSlice";
 
 export default function Navigation() {
+    const  dispatch = useDispatch()
+    const handleLogout =()=>{
+      dispatch(userLoggedOut());
+      localStorage.clear();
+    }
     return (
         <nav className="border-general sticky top-0 z-40 border-b bg-violet-700 transition-colors">
             <div className="max-w-7xl mx-auto">
@@ -9,13 +16,14 @@ export default function Navigation() {
                     <Link to="/">
                         <img
                             className="h-10"
-                            src={logoImage}
-                            alt="Learn with Sumit"
+                            // src={logoImage}
+                            alt="logo"
                         />
                     </Link>
                     <ul>
                         <li className="text-white">
-                            <a href="#">Logout</a>
+                            <span className="cursor-pointer"
+                            onClick={handleLogout}>Logout</span>
                         </li>
                     </ul>
                 </div>
