@@ -1,7 +1,13 @@
 import { apiSlice } from "../apiSlice/apiSlice";
 
 export const conversationsApi = apiSlice.injectEndpoints({
-    endpoints: (builder)=>{
+    endpoints: (builder)=>({
         // endpoints here
-    },
+        getConversations : builder.query({
+          query:(email)=>
+          `/conversations/participants_like=${email}&_sort=timestamp&_order=desc&_page=1&_limit=${process.env.REACT_APP_CONVERSATIONS_LIMIT}`
+        })
+    }),
 });
+
+export const { useGetConversationsQuery } = conversationsApi;
