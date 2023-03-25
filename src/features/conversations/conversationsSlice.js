@@ -12,5 +12,5 @@ const conversations = createSlice({
     },
 });
 
-export const { } = conversations.actions;
+export const {name} = conversations.actions;
 export default conversations.reducer ;
