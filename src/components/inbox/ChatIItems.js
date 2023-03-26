@@ -12,8 +12,7 @@ const ChatItems=()=> {
     const { email } = user || {};
 
     const {data: conversations, isLoading , isError, error} = useGetConversationsQuery(email)
-    console.log(conversations);
-
+  
     // decide what to render
     let content  = null;
     if(isLoading) {
@@ -22,18 +21,18 @@ const ChatItems=()=> {
     }else if( !isLoading && isError){
         content = (
         <li className="m-2 text-center">
-              <Error message={error?.data} />
+            <Error message={error?.data} />
         </li>)
 
-    } else if ( !isLoading && !isError && conversations?.length === 0){
+    }else if ( !isLoading && !isError && conversations?.length === 0){
         content = (
         <li className="m-2 text-center">
-              No Conversations Found!
+            No Conversations Found!
         </li>)
 
-    } else if ( !isLoading && !isError && conversations?.length > 0){
+    }else if ( !isLoading && !isError && conversations?.length > 0){
         content = conversations?.map((conversation)=>{
-            const {id, message, timestamp} = conversation ;
+            const { id, message, timestamp } = conversation || {};
             const { email } = user || {};
             const { name, email:partnerEmail } =  getPartnerInfo(conversation.users , email)
 

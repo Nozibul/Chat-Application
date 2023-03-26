@@ -1,7 +1,7 @@
 
 import { apiSlice } from "../api/apiSlice";
 
- const conversationsApi = apiSlice.injectEndpoints({
+export const conversationsApi = apiSlice.injectEndpoints({
     endpoints: (builder)=>({
         // endpoints here
         getConversations : builder.query({
@@ -12,4 +12,3 @@ import { apiSlice } from "../api/apiSlice";
 
 export const { useGetConversationsQuery } = conversationsApi;
 
-// &_sort=timestamp&_order=desc&_page=1&_limit=${process.env.REACT_APP_CONVERSATIONS_LIMIT}
