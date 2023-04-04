@@ -5,8 +5,18 @@ import { apiSlice } from "../api/apiSlice";
     endpoints: (builder)=>({
         getMessages: builder.query({
             query: (id)=>`/messages?conversationId_like=${id}&_sort=timestamp&_order=desc&_page=1&_limit=${process.env.REACT_APP_MESSAGES_PER_PAGE}`
-        })
+        }),
+
+        addMessages: builder.mutation({
+            query: (data)=>({
+              url: "/messages",
+              method: "POST",
+              body: data,
+            }),
+          }),
     }),
+
+   
 });
 
-export const { useGetMessagesQuery } = messagesApi
+export const { useGetMessagesQuery, useAddMessagesMutation } = messagesApi

@@ -3,7 +3,7 @@ import ChatItems from "./ChatIItems";
 import Modal from "./Modal";
 // import Blank from "./Blank";
 
-export default function Sidebar() {
+const Sidebar=()=> {
     const [opened, setOpened] = useState(false);
 
     const controlModal = () => {
@@ -41,3 +41,5 @@ C139.689,120.449,136.331,117.092,132.189,117.092z"
         </div>
     );
 }
+
+export default Sidebar ;
