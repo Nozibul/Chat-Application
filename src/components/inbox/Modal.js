@@ -3,12 +3,12 @@ import isValidEmail from '../../utils/isValidEmail'
 import { useGetUserQuery } from "../../features/users/usersApi";
 import Error from "../ui/Error";
 import { useDispatch, useSelector } from "react-redux";
-import { conversationsApi } from "../../features/conversations/conversationsApi";
+import { conversationsApi, useAddConversationMutation, useEditConversationMutation } from "../../features/conversations/conversationsApi";
 
 const Modal=({ open, control })=> {
 
     const [to, setTo]= useState('');
-    const [messages, setMessages] = useState('');
+    const [message, setMessages] = useState('');
     const [checkUser, setCheckUser] = useState(false);
     const [responseError, setResponseError] = useState('');
     const [conversation,  setConversation] = useState(undefined)
@@ -19,6 +19,9 @@ const Modal=({ open, control })=> {
     const {email: myEmail} = loggedInUser || {} ;
 
     const {data: participant} = useGetUserQuery(to, { skip: !checkUser});
+
+    const [editConversation , {isSuccess: isEditSuccess}] = useEditConversationMutation();
+    const [addConversation , {isSuccess: isAddSuccess}] = useAddConversationMutation();
 
     useEffect(()=>{
        if(participant?.length > 0 && participant[0].email !== myEmail){
@@ -33,6 +36,15 @@ const Modal=({ open, control })=> {
          });
         };
     }, [participant, myEmail, to, dispatch]);
+
+   // conversation edit/add success control
+    useEffect(()=>{
+        if(isEditSuccess || isAddSuccess){
+            control()
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[isAddSuccess, isEditSuccess])
+
 
     const debounceHandler = (fn, delay)=>{
         let timeoutId
@@ -56,6 +68,27 @@ const Modal=({ open, control })=> {
 
     const handleSubmit =(e)=>{
         e.preventDefault();
+
+        if(conversation.length > 0){
+            // edit conversation
+            editConversation({
+                id: conversation[0].id,
+                data: {
+                    participants: `${myEmail}-${participant[0].email}`,
+                    users: [loggedInUser, participant[0]],
+                    message,
+                    timestamp: new Date().getTime()
+                }
+            })
+        } else if(conversation.length === 0){
+            // add conversation
+            addConversation({
+                participants: `${myEmail}-${participant[0].email}`,
+                users: [loggedInUser, participant[0]],
+                message,
+                timestamp: new Date().getTime()
+            })
+        }
     }
 
     return (
@@ -93,7 +126,7 @@ const Modal=({ open, control })=> {
                                 id="message"
                                 name="message"
                                 type="text"
-                                value={messages}
+                                value={message}
                                 required
                                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-violet-500 focus:border-violet-500 focus:z-10 sm:text-sm"
                                 placeholder="Message"

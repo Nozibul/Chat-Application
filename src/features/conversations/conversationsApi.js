@@ -25,8 +25,8 @@ export const conversationsApi = apiSlice.injectEndpoints({
             url:`/conversations/${id}`,
             method: "PATCH",
             body: data,
-          })
-        })
+          }),
+        }),
     }),
 });
 
